@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <script src="http://localhost:8080/perspective-viewer.js"></script>
+    <script src="http://localhost:8080/perspective-viewer-hypergrid.js"></script>
+    <script src="http://localhost:8080/perspective-viewer-d3fc.js"></script>
+
+    <script src="http://localhost:8080/perspective.js"></script>
+
+    <link rel='stylesheet' href="http://localhost:8080/material.css">
+
+    <style>
+        perspective-viewer{position:absolute;top:0;left:0;right:0;bottom:0;}
+    </style>
+
+</head>
+
+<body>
+
+    <perspective-viewer id="grid">
+
+    </perspective-viewer>
+
+    <script>
+        window.addEventListener('WebComponentsReady', async () => {
+            const resp = await fetch("/kdb", {
+                method: 'POST',
+                body: "trades"
+            });
+            const name = await resp.text();
+            connection = perspective.websocket("ws://localhost:8888/perspective")
+            table = connection.open_table(name);
+            grid.load(table);
+        });
+    </script>
+
+</body>
+
+</html>
